@@ -12,11 +12,16 @@ export default function App() {
         <Stack.Screen 
           name="Home" 
           component={Home} 
-          options={{ 
-            title: "Working Logistc",
-            headerStyle:{backgroundColor:"rgba(0, 111, 209, 0.8)"},
-            headerTintColor:'#333',
-            headerTitleStyle:{fontWeight:'bold', alignSelf:'center'}
+          options={{
+            title: 'Working Project',
+            headerStyle: {
+              backgroundColor: 'rgba(0, 111, 209, 0.8)',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            headerTitleAlign: 'center'
           }}
         />
         <Stack.Screen name="Login" component={Login} />
