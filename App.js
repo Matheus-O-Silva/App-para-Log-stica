@@ -1,11 +1,6 @@
-import React, { useState, useEffect} from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Text, View, Button } from 'react-native';
-import {css} from './assets/css/Css';
-import Home from './views/Home';
-import Login from './views/Login';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Home, Login, Rastreio} from './views/index'
 
 export default function App() {
 
@@ -14,8 +9,18 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen 
+          name="Home" 
+          component={Home} 
+          options={{ 
+            title: "Working Logistc",
+            headerStyle:{backgroundColor:"rgba(0, 111, 209, 0.8)"},
+            headerTintColor:'#333',
+            headerTitleStyle:{fontWeight:'bold', alignSelf:'center'}
+          }}
+        />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Rastreio" component={Rastreio} />
       </Stack.Navigator>
     </NavigationContainer>
   );
