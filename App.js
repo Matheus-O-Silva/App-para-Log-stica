@@ -1,13 +1,15 @@
+import React, { useState, useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Text, View } from 'react-native';
-import Page from './views/Page';
 import {css} from './assets/css/Css';
-import { NavigationContainer } from '@react-navigation/native';
 import Home from './views/Home';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function App() {
 
-  const Stack = createStackNavigator();
+  const Stack = createNativeStackNavigator();
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
