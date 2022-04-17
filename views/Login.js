@@ -12,17 +12,25 @@ export default function Login(props) {
   //Envia o formulário de Login
   async function sendForm()
   {
-    let response = await fetch('http://127.0.0.1:8000/api/login', {
+    var myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+
+    var formdata = new FormData();
+    formdata.append("email", user);
+    formdata.append("password", password);
+    formdata.append("device_name", "mobile");
+
+    var requestOptions = {
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: user,
-        password: password,
-      })
-    })
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    fetch("http://172.29.48.1:8000/api/sanctum/token", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
   }
 
   return (
