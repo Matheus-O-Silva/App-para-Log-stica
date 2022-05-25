@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import * as SecureStore from 'expo-secure-store';
 import {View, Text, TextInput, Image, KeyboardAvoidingView,Platform, TouchableOpacity} from 'react-native';
 import { css } from '../assets/css/Css';
 
@@ -12,6 +13,7 @@ export default function Login(props) {
   //Envia o formulário de Login
   async function sendForm()
   {
+    console.log('teste')
     var myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
 
@@ -27,10 +29,14 @@ export default function Login(props) {
       redirect: 'follow'
     };
 
-    fetch("http://172.29.48.1:8000/api/sanctum/token", requestOptions)
+    fetch("http://192.168.1.6:8000/api/sanctum/token", requestOptions)
       .then(response => response.text())
-      .then(result => console.log(result))
+      .then(result => {
+        SecureStore.setItemAsync('user', JSON.stringify(user));
+        console.log(result)
+      })
       .catch(error => console.log('error', error));
+      
   }
 
   return (
