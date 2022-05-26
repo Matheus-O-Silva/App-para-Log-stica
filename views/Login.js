@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as SecureStore from 'expo-secure-store';
+import * as LocalAuthentication from 'expo-local-authentication';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {View, Text, TextInput, Image, KeyboardAvoidingView,Platform, TouchableOpacity} from 'react-native';
 import { css } from '../assets/css/Css';
@@ -12,6 +12,53 @@ export default function Login({navigation}) {
   const [user, setUser]         = useState(null);
   const [password, setPassword] = useState(null);
   const [login, setLogin]       = useState(null);
+
+  useEffect(()=>{
+      verifyLogin();
+  },[]);
+
+  //Verifica se o usuário já possui algum login
+  async function verifyLogin()
+  {
+      let response=await AsyncStorage.getItem('userData');
+      let json = await JSON.parse(response);
+      if(json !== null){
+          setUser('test@mail.com');
+          setPassword('password');
+          setLogin(true);
+          
+      }
+      
+  }
+
+  
+  useEffect(()=>{
+      if(login === true){
+          biometric();
+      }
+  },[login]);
+
+//Biometria
+async function biometric()
+{
+    let compatible= await LocalAuthentication.hasHardwareAsync();
+    if(compatible){
+        let biometricRecords = await LocalAuthentication.isEnrolledAsync();
+        if(!biometricRecords){
+            alert('Biometria não cadastrada');
+        }else{
+            let result=await  LocalAuthentication.authenticateAsync();
+            if(result.success){
+                //alert('Biometria não cadastrada')
+                sendForm();
+            }else{
+                setUser(null);
+                setPassword(null);
+            }
+        }
+    }
+}
+  
 
   //Envia o formulário de Login
   async function sendForm()
