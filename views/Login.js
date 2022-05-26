@@ -34,7 +34,7 @@ export default function Login({navigation}) {
     let response=await fetch("http://192.168.1.6:8000/api/sanctum/token", requestOptions,{
     });
     let json=await response.json();
-    if(json === 'error'){
+    if(response.status !== 201){
         setDisplay('flex');
         setTimeout(()=>{
             setDisplay('none');
@@ -43,7 +43,8 @@ export default function Login({navigation}) {
     }else{
         let userData = await AsyncStorage.setItem('userData', JSON.stringify(json))
         let resData  = await AsyncStorage.getItem('userData')
-        console.log(resData)
+        //console.log(resData)
+        //console.log(response.status)
         navigation.navigate('Rastreio');
     }
       
