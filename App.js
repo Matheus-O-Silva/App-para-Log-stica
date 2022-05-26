@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AreaRestrita from './views/AreaRestrita';
 import {Home, Login, Rastreio} from './views/index'
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
         />
         <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
         <Stack.Screen name="Rastreio" component={Rastreio} />
+        <Stack.Screen name="AreaRestrita" component={AreaRestrita} />
       </Stack.Navigator>
     </NavigationContainer>
   );
