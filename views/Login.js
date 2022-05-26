@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {View, Text, TextInput, Image, KeyboardAvoidingView,Platform, TouchableOpacity} from 'react-native';
 import { css } from '../assets/css/Css';
 
-export default function Login(props) {
+export default function Login({navigation}) {
 
   const [display, setDisplay]   = useState('none');
   const [user, setUser]         = useState(null);
@@ -13,7 +16,6 @@ export default function Login(props) {
   //Envia o formulário de Login
   async function sendForm()
   {
-    console.log('teste')
     var myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
 
@@ -24,18 +26,26 @@ export default function Login(props) {
 
     var requestOptions = {
       method: 'POST',
-      headers: myHeaders,
+      headers: myHeaders, 
       body: formdata,
       redirect: 'follow'
     };
 
-    fetch("http://192.168.1.6:8000/api/sanctum/token", requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        SecureStore.setItemAsync('user', JSON.stringify(user));
-        console.log(result)
-      })
-      .catch(error => console.log('error', error));
+    let response=await fetch("http://192.168.1.6:8000/api/sanctum/token", requestOptions,{
+    });
+    let json=await response.json();
+    if(json === 'error'){
+        setDisplay('flex');
+        setTimeout(()=>{
+            setDisplay('none');
+        },5000);
+        await AsyncStorage.clear();
+    }else{
+        let userData = await AsyncStorage.setItem('userData', JSON.stringify(json))
+        let resData  = await AsyncStorage.getItem('userData')
+        console.log(resData)
+        navigation.navigate('Rastreio');
+    }
       
   }
 
